@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Bookstore, Book, User
@@ -16,20 +16,7 @@ session = DBSession()
 def bookstoreCatalog(bookstore_id):
 	bookstore = session.query(Bookstore).filter_by(id=bookstore_id).one()
 	books = session.query(Book).filter_by(bookstore_id=bookstore.id)
-	output = ''
-	for i in books:
-		output += i.title
-		output += '</br>'
-		output += i.author
-		output += '</br>'
-		output += i.genre
-		output += '</br>'		
-		output += i.price
-		output += '</br>'
-		output += i.description
-		output += '</br>'
-		output += '</br>'
-	return output
+	return render_template('bookDetails.html', bookstore=bookstore, books=books)
 
 @app.route('/bookstore/<int:bookstore_id>/new/')
 def newBook(bookstore_id):
