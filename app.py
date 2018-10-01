@@ -23,6 +23,9 @@ def newBook(bookstore_id):
 	if request.method == 'POST':
 		newBook = Book(title=request.form['title'],
 					   author=request.form['author'],
+					   description=request.form['description'],
+					   price=request.form['price'],
+					   genre=request.form['genre'],
 					   bookstore_id=bookstore_id)
 		session.add(newBook)
 		session.commit()
