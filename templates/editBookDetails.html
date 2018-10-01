@@ -1,0 +1,19 @@
+<h1> Edit Book </h1>
+
+<form action=" {{ url_for('editBookDetails', bookstore_id = bookstore_id, book_id = book.id) }} " method='post'>
+    <p>Title:</p>
+    <input type='text' size=80 name='title' placeholder='{{book.title}}' />
+    <p>Author:</p>
+    <input type='text' size=80 name='author' placeholder='{{book.author}}' />
+    <p>Description:</p>
+    <input type='text' size=80 name='description' placeholder='{{book.description}}' />
+    <p>Genre:</p>
+    <input type='text' size=80 name='genre' placeholder='{{book.genre}}' />
+    <p>Price:</p>
+    <input type='int' name='price' placeholder='{{book.price}}' /> 
+
+	</br></br>
+        <input type='submit' value='Edit'>
+
+        <a href=" {{ url_for('bookstoreCatalog', bookstore_id = bookstore_id) }} ">Cancel</a>
+</form>
