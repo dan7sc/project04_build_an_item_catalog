@@ -34,9 +34,21 @@ def newBook(bookstore_id):
 		return render_template('newBook.html',bookstore_id=bookstore_id)
 
 
-@app.route('/bookstore/<int:bookstore_id>/<int:book_id>/edit/')
+@app.route('/bookstore/<int:bookstore_id>/<int:book_id>/edit/', methods=['GET', 'POST'])
 def editBookDetails(bookstore_id, book_id):
-	return "page to edit a book details."
+	editedBook = session.query(Book).filter_by(id=book_id).one()
+	if(request.method == 'POST'):
+		if(request.form['title']):
+			editedBook.title = request.form['title']
+			editedBook.author = request.form['author']
+			editedBook.description = request.form['description']
+			editedBook.genre = request.form['genre']
+			editedBook.price = request.form['price']
+		session.add(editedBook)
+		session.commit()
+		return redirect(url_for('bookstoreCatalog', bookstore_id=bookstore_id))
+	else:
+		return render_template('editBookDetails.html', book=editedBook, bookstore_id=bookstore_id, book_id=book_id)
 
 @app.route('/bookstore/<int:bookstore_id>/<int:book_id>/delete/')
 def deleteBook(bookstore_id, book_id):
