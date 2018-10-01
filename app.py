@@ -50,9 +50,15 @@ def editBookDetails(bookstore_id, book_id):
 	else:
 		return render_template('editBookDetails.html', book=editedBook, bookstore_id=bookstore_id, book_id=book_id)
 
-@app.route('/bookstore/<int:bookstore_id>/<int:book_id>/delete/')
+@app.route('/bookstore/<int:bookstore_id>/<int:book_id>/delete/', methods=['GET', 'POST'])
 def deleteBook(bookstore_id, book_id):
-	return "page to delete a book."
+	deleteBook = session.query(Book).filter_by(id=book_id).one()
+	if(request.method == 'POST'):
+		session.delete(deleteBook)
+		session.commit()
+		return redirect(url_for('bookstoreCatalog', bookstore_id=bookstore_id))
+	else:
+		return render_template('deleteBook.html', book=deleteBook, bookstore_id=bookstore_id, book_id=book_id)
 
 
 if __name__ == '__main__':
