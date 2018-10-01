@@ -1,0 +1,28 @@
+<html>
+
+<body>
+
+<h1>{{bookstore.name}}</h1>
+
+
+{% for i in books %}
+
+<div>
+
+<p>{{i.title}}</p>
+
+<p>{{i.author}}</p>
+
+<p>{{i.genre}}</p>
+
+<p>{{i.description}}</p>
+
+<p> {{i.price}} </p>
+
+</div>
+
+
+{% endfor %}
+</body>
+
+</html>
