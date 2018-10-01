@@ -1,0 +1,23 @@
+<html>
+<body>
+<h1> New Book </h1>
+
+<form action="{{url_for('newBook', bookstore_id=bookstore_id )}}" method = 'POST'>
+
+<p>Title:</p>
+
+<input type='text' size='80' name='title'>
+
+<p>Author:</p>
+
+<input type='text' size='80' name='author'>
+
+</br>
+</br>
+
+<input type='submit' value='Create'>
+
+</form>
+
+</body>
+</html>
