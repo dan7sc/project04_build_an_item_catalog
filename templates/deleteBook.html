@@ -1,6 +1,4 @@
 <h1> Are you sure you want to delete {{book.title}}? </h1>
-
-
 <form action=" {{ url_for('deleteBook', bookstore_id = bookstore_id, book_id = book_id) }} " method='post'>
     <input type='submit' value='Delete'>
     </br></br>

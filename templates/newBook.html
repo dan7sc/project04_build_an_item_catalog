@@ -1,8 +1,8 @@
 <html>
 <body>
 <h1> New Book </h1>
-
 <form action="{{url_for('newBook', bookstore_id=bookstore_id )}}" method = 'POST'>
+
 	<p>Title:</p>
 		<input type='text' size='80' name='title'>
 	<p>Author:</p>
@@ -13,19 +13,20 @@
         <input type='int' name='price' />
     <p>Genre:</p>
         <input type='radio' name='genre' value='Fantasy' />
-        <label>Fantasy</label>
+	        <label>Fantasy</label>
         </br>
         <input type='radio' name='genre' value='Mystery' />
-        <label>Mystery</label>
+	        <label>Mystery</label>
         </br>
         <input type='radio' name='genre' value='Romance' />
-        <label>Romance</label>
+	        <label>Romance</label>
         </br>
         <input type='radio' name='genre' value='Sci-Fi' />
-        <label>Sci-Fi</label>
+	        <label>Sci-Fi</label>
 
 		</br></br>
 	<input type='submit' value='Create'>
+	
 </form>
 </body>
 </html>
