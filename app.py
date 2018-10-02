@@ -32,6 +32,16 @@ def editBookstore(bookstore_id):
         return render_template('editBookstore.html', bookstore=editedBookstore, bookstore_id=bookstore_id)
 
 
+@app.route("/bookstore/new/", methods=['GET', 'POST'])
+def newBookstore():
+    if(request.method == 'POST'):
+        bookstores = session.query(Bookstore).all()
+        newBookstore = Bookstore(name = request.form['name'])
+        session.add(newBookstore)
+        session.commit()
+        return redirect(url_for('showBookstores'))
+    else:
+        return render_template('newBookstore.html')
 
 
 @app.route('/bookstore/<int:bookstore_id>/')
