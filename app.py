@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Bookstore, Book, User
 
@@ -12,7 +12,13 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 @app.route('/')
-@app.route('/bookstores/<int:bookstore_id>/')
+@app.route('/bookstores/')
+def showBookstores():
+  bookstores = session.query(Bookstore).order_by(asc(Bookstore.name))
+  return render_template('bookstores.html', bookstores=bookstores)
+
+
+@app.route('/bookstore/<int:bookstore_id>/')
 def bookstoreCatalog(bookstore_id):
 	bookstore = session.query(Bookstore).filter_by(id=bookstore_id).one()
 	books = session.query(Book).filter_by(bookstore_id=bookstore.id)
