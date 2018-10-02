@@ -18,11 +18,28 @@ def showBookstores():
   return render_template('bookstores.html', bookstores=bookstores)
 
 
+@app.route("/bookstore/<int:bookstore_id>/edit/", methods=['GET', 'POST'])
+def editBookstore(bookstore_id):
+    editedBookstore = session.query(Bookstore).filter_by(id=bookstore_id).one()
+    print(editedBookstore.name)
+    if(request.method == 'POST'):
+        if(request.form['name']):
+            editedBookstore.name = request.form['name']
+        session.add(editedBookstore)
+        session.commit()
+        return redirect(url_for('showBookstores'))
+    else:
+        return render_template('editBookstore.html', bookstore=editedBookstore, bookstore_id=bookstore_id)
+
+
+
+
 @app.route('/bookstore/<int:bookstore_id>/')
 def bookstoreCatalog(bookstore_id):
 	bookstore = session.query(Bookstore).filter_by(id=bookstore_id).one()
 	books = session.query(Book).filter_by(bookstore_id=bookstore.id)
 	return render_template('bookDetails.html', bookstore=bookstore, books=books)
+
 
 @app.route('/bookstore/<int:bookstore_id>/new/', methods=['GET', 'POST'])
 def newBook(bookstore_id):
