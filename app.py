@@ -43,6 +43,16 @@ def newBookstore():
     else:
         return render_template('newBookstore.html')
 
+@app.route("/bookstore/<int:bookstore_id>/delete/", methods=['GET', 'POST'])
+def deleteBookstore(bookstore_id):
+    deletedBookstore = session.query(Bookstore).filter_by(id=bookstore_id).one()
+    if(request.method == 'POST'):
+        session.delete(deletedBookstore)
+        session.commit()
+        return redirect(url_for('showBookstores'))
+    else:
+        return render_template('deleteBookstore.html', bookstore = deletedBookstore, bookstore_id = bookstore_id)
+
 
 @app.route('/bookstore/<int:bookstore_id>/')
 def bookstoreCatalog(bookstore_id):
