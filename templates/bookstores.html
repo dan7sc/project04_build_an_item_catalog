@@ -4,6 +4,10 @@
 
     {% for bookstore in bookstores: %}
         <h3>{{bookstore.name}}</h3>
+        <a href=" {{ url_for('editBookstore', bookstore_id = bookstore.id) }} ">Edit Bookstore</a>
+        </br></br>
+        <a href=" {{ url_for('deleteBookstore', bookstore_id = bookstore.id)}} ">Delete Bookstore</a>
+        </br></br></br>
     {% endfor %}
 
 </body>
