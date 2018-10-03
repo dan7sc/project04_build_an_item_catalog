@@ -149,6 +149,8 @@ def showBookstores():
 
 @app.route("/bookstore/<int:bookstore_id>/edit/", methods=['GET', 'POST'])
 def editBookstore(bookstore_id):
+    if 'username' not in login_session:
+        return redirect('/login')
     session = open_session(engine)
     editedBookstore = session.query(Bookstore).filter_by(id=bookstore_id).one()
     if(request.method == 'POST'):
