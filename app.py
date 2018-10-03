@@ -3,6 +3,7 @@ from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Bookstore, Book, User
 
+
 app = Flask(__name__)
 
 engine = create_engine('sqlite:///virtualbookstores.db')
@@ -122,6 +123,12 @@ def bookstoreCatalogJSON(bookstore_id):
 def catalogBookJSON(bookstore_id, book_id):
     book = session.query(Book).filter_by(id=book_id).one()
     return jsonify(book = book.serialize)
+
+
+@app.route('/bookstores/JSON')
+def bookstoresJSON():
+    bookstores = session.query(Bookstore).all()
+    return jsonify(bookstores=[i.serialize for i in bookstores])
 
 
 if __name__ == '__main__':
