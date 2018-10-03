@@ -141,7 +141,10 @@ def showBookstores():
     session = open_session(engine)
     bookstores = session.query(Bookstore).order_by(asc(Bookstore.name))
     close_session(session)
-    return render_template('bookstores.html', bookstores=bookstores)
+    if 'username' not in login_session:
+        return render_template('publicBookstores.html', bookstores=bookstores)
+    else:
+        return render_template('bookstores.html', bookstores=bookstores)
 
 
 @app.route("/bookstore/<int:bookstore_id>/edit/", methods=['GET', 'POST'])
