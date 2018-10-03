@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for, jsonify, flash
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Bookstore, Book, User
@@ -29,6 +29,7 @@ def editBookstore(bookstore_id):
             editedBookstore.name = request.form['name']
         session.add(editedBookstore)
         session.commit()
+        flash("Bookstore successfully edited")
         return redirect(url_for('showBookstores'))
     else:
         return render_template('editBookstore.html', bookstore=editedBookstore, bookstore_id=bookstore_id)
@@ -41,6 +42,7 @@ def newBookstore():
         newBookstore = Bookstore(name = request.form['name'])
         session.add(newBookstore)
         session.commit()
+        flash("New bookstore %s successfully created" % newBookstore.name)
         return redirect(url_for('showBookstores'))
     else:
         return render_template('newBookstore.html')
@@ -52,6 +54,7 @@ def deleteBookstore(bookstore_id):
     if(request.method == 'POST'):
         session.delete(deletedBookstore)
         session.commit()
+        flash("Bookstore %s successfully deleted" % deletedBookstore.name)
         return redirect(url_for('showBookstores'))
     else:
         return render_template('deleteBookstore.html', bookstore = deletedBookstore, bookstore_id = bookstore_id)
@@ -132,5 +135,6 @@ def bookstoresJSON():
 
 
 if __name__ == '__main__':
+	app.secret_key = 'super_secret_key'
 	app.debug = True
 	app.run(host='0.0.0.0', port=8000)
