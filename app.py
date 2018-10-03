@@ -78,6 +78,7 @@ def newBook(bookstore_id):
 					   bookstore_id=bookstore_id)
 		session.add(newBook)
 		session.commit()
+		flash("New book %s successfully created" % newBook.title)
 		return redirect(url_for('bookstoreCatalog',bookstore_id=bookstore_id))
 	else:
 		return render_template('newBook.html',bookstore_id=bookstore_id)
@@ -99,6 +100,7 @@ def editBookDetails(bookstore_id, book_id):
 			editedBook.price = request.form['price']
 		session.add(editedBook)
 		session.commit()
+		flash("Book successfully edited")
 		return redirect(url_for('bookstoreCatalog', bookstore_id=bookstore_id))
 	else:
 		return render_template('editBookDetails.html', book=editedBook, bookstore_id=bookstore_id, book_id=book_id)
@@ -106,13 +108,14 @@ def editBookDetails(bookstore_id, book_id):
 
 @app.route('/bookstore/<int:bookstore_id>/<int:book_id>/delete/', methods=['GET', 'POST'])
 def deleteBook(bookstore_id, book_id):
-	deleteBook = session.query(Book).filter_by(id=book_id).one()
+	deletedBook = session.query(Book).filter_by(id=book_id).one()
 	if(request.method == 'POST'):
-		session.delete(deleteBook)
+		session.delete(deletedBook)
 		session.commit()
+		flash("Book %s successfully deleted" % deletedBook.title)
 		return redirect(url_for('bookstoreCatalog', bookstore_id=bookstore_id))
 	else:
-		return render_template('deleteBook.html', book=deleteBook, bookstore_id=bookstore_id, book_id=book_id)
+		return render_template('deleteBook.html', book=deletedBook, bookstore_id=bookstore_id, book_id=book_id)
 
 
 @app.route('/bookstore/<int:bookstore_id>/catalog/JSON')

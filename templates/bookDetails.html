@@ -2,6 +2,17 @@
 <body>
 
 	<h1>{{bookstore.name}}</h1>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    	<ul>
+    	{% for message in messages %}
+    		<li> <strong> {{message}} </strong></li>
+    	{% endfor %}
+    	</ul>
+    	{% endif %}
+    {% endwith %}
+
 	<a href=" {{ url_for('newBook', bookstore_id = bookstore.id) }} ">Create New Book</a>
 
 	{% for i in books %}
