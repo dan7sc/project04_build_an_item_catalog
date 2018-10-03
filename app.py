@@ -262,6 +262,8 @@ def editBookDetails(bookstore_id, book_id):
 
 @app.route('/bookstore/<int:bookstore_id>/<int:book_id>/delete/', methods=['GET', 'POST'])
 def deleteBook(bookstore_id, book_id):
+    if 'username' not in login_session:
+        return redirect('/login')
     session = open_session(engine)
     deletedBook = session.query(Book).filter_by(id=book_id).one()
     if(request.method == 'POST'):
