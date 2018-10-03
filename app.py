@@ -7,10 +7,12 @@ from database_setup import Base, Bookstore, Book, User
 app = Flask(__name__)
 
 engine = create_engine('sqlite:///virtualbookstores.db')
-Base.metadata.bind = engine
 
-DBSession = sessionmaker(bind=engine)
-session = DBSession()
+def open_session(engine):
+    Base.metadata.bind = engine
+    DBSession = sessionmaker(bind=engine)
+    session = DBSession()
+    return session
 
 
 def close_session(session):
@@ -20,13 +22,15 @@ def close_session(session):
 @app.route('/')
 @app.route('/bookstores/')
 def showBookstores():
-  bookstores = session.query(Bookstore).order_by(asc(Bookstore.name))
-  close_session(session)
-  return render_template('bookstores.html', bookstores=bookstores)
+    session = open_session(engine)
+    bookstores = session.query(Bookstore).order_by(asc(Bookstore.name))
+    close_session(session)
+    return render_template('bookstores.html', bookstores=bookstores)
 
 
 @app.route("/bookstore/<int:bookstore_id>/edit/", methods=['GET', 'POST'])
 def editBookstore(bookstore_id):
+    session = open_session(engine)
     editedBookstore = session.query(Bookstore).filter_by(id=bookstore_id).one()
     if(request.method == 'POST'):
         if(request.form['name']):
@@ -44,6 +48,7 @@ def editBookstore(bookstore_id):
 @app.route("/bookstore/new/", methods=['GET', 'POST'])
 def newBookstore():
     if(request.method == 'POST'):
+        session = open_session(engine)
         bookstores = session.query(Bookstore).all()
         newBookstore = Bookstore(name = request.form['name'])
         session.add(newBookstore)
@@ -57,6 +62,7 @@ def newBookstore():
 
 @app.route("/bookstore/<int:bookstore_id>/delete/", methods=['GET', 'POST'])
 def deleteBookstore(bookstore_id):
+    session = open_session(engine)
     deletedBookstore = session.query(Bookstore).filter_by(id=bookstore_id).one()
     if(request.method == 'POST'):
         session.delete(deletedBookstore)
@@ -71,6 +77,7 @@ def deleteBookstore(bookstore_id):
 
 @app.route('/bookstore/<int:bookstore_id>/')
 def bookstoreCatalog(bookstore_id):
+    session = open_session(engine)
     bookstore = session.query(Bookstore).filter_by(id=bookstore_id).one()
     books = session.query(Book).filter_by(bookstore_id=bookstore.id)
     close_session(session)
@@ -80,6 +87,7 @@ def bookstoreCatalog(bookstore_id):
 @app.route('/bookstore/<int:bookstore_id>/new/', methods=['GET', 'POST'])
 def newBook(bookstore_id):
     if request.method == 'POST':
+        session = open_session(engine)
         newBook = Book(title=request.form['title'],
                        author=request.form['author'],
                        description=request.form['description'],
@@ -97,6 +105,7 @@ def newBook(bookstore_id):
 
 @app.route('/bookstore/<int:bookstore_id>/<int:book_id>/edit/', methods=['GET', 'POST'])
 def editBookDetails(bookstore_id, book_id):
+    session = open_session(engine)
     editedBook = session.query(Book).filter_by(id=book_id).one()
     if(request.method == 'POST'):
         if(request.form['title']):
@@ -121,6 +130,7 @@ def editBookDetails(bookstore_id, book_id):
 
 @app.route('/bookstore/<int:bookstore_id>/<int:book_id>/delete/', methods=['GET', 'POST'])
 def deleteBook(bookstore_id, book_id):
+    session = open_session(engine)
     deletedBook = session.query(Book).filter_by(id=book_id).one()
     if(request.method == 'POST'):
         session.delete(deletedBook)
@@ -135,6 +145,7 @@ def deleteBook(bookstore_id, book_id):
 
 @app.route('/bookstore/<int:bookstore_id>/catalog/JSON')
 def bookstoreCatalogJSON(bookstore_id):
+    session = open_session(engine)
     bookstore = session.query(Bookstore).filter_by(id=bookstore_id).one()
     books = session.query(Book).filter_by(bookstore_id=bookstore_id).all()
     close_session(session)
@@ -143,6 +154,7 @@ def bookstoreCatalogJSON(bookstore_id):
 
 @app.route('/bookstore/<int:bookstore_id>/catalog/<int:book_id>/JSON')
 def catalogBookJSON(bookstore_id, book_id):
+    session = open_session(engine)
     book = session.query(Book).filter_by(id=book_id).one()
     close_session(session)
     return jsonify(book = book.serialize)
@@ -150,6 +162,7 @@ def catalogBookJSON(bookstore_id, book_id):
 
 @app.route('/bookstores/JSON')
 def bookstoresJSON():
+    session = open_session(engine)
     bookstores = session.query(Bookstore).all()
     close_session(session)
     return jsonify(bookstores=[i.serialize for i in bookstores])
