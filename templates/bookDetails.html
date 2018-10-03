@@ -2,6 +2,8 @@
 <body>
 
 	<h1>{{bookstore.name}}</h1>
+	<a href=" {{ url_for('newBook', bookstore_id = bookstore.id) }} ">Create New Book</a>
+
 	{% for i in books %}
 
 	<div>
