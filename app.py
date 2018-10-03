@@ -214,6 +214,8 @@ def bookstoreCatalog(bookstore_id):
 
 @app.route('/bookstore/<int:bookstore_id>/new/', methods=['GET', 'POST'])
 def newBook(bookstore_id):
+    if 'username' not in login_session:
+        return redirect('/login')
     if request.method == 'POST':
         session = open_session(engine)
         newBook = Book(title=request.form['title'],
