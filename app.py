@@ -11,6 +11,7 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
+
 @app.route('/')
 @app.route('/bookstores/')
 def showBookstores():
@@ -42,6 +43,7 @@ def newBookstore():
         return redirect(url_for('showBookstores'))
     else:
         return render_template('newBookstore.html')
+
 
 @app.route("/bookstore/<int:bookstore_id>/delete/", methods=['GET', 'POST'])
 def deleteBookstore(bookstore_id):
@@ -97,6 +99,7 @@ def editBookDetails(bookstore_id, book_id):
 	else:
 		return render_template('editBookDetails.html', book=editedBook, bookstore_id=bookstore_id, book_id=book_id)
 
+
 @app.route('/bookstore/<int:bookstore_id>/<int:book_id>/delete/', methods=['GET', 'POST'])
 def deleteBook(bookstore_id, book_id):
 	deleteBook = session.query(Book).filter_by(id=book_id).one()
@@ -113,6 +116,12 @@ def bookstoreCatalogJSON(bookstore_id):
 	bookstore = session.query(Bookstore).filter_by(id=bookstore_id).one()
 	books = session.query(Book).filter_by(bookstore_id=bookstore_id).all()
 	return jsonify(Books=[i.serialize for i in books])
+
+
+@app.route('/bookstore/<int:bookstore_id>/catalog/<int:book_id>/JSON')
+def catalogBookJSON(bookstore_id, book_id):
+    book = session.query(Book).filter_by(id=book_id).one()
+    return jsonify(book = book.serialize)
 
 
 if __name__ == '__main__':
