@@ -13,25 +13,31 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 
+def close_session(session):
+    session.close()
+
+
 @app.route('/')
 @app.route('/bookstores/')
 def showBookstores():
   bookstores = session.query(Bookstore).order_by(asc(Bookstore.name))
+  close_session(session)
   return render_template('bookstores.html', bookstores=bookstores)
 
 
 @app.route("/bookstore/<int:bookstore_id>/edit/", methods=['GET', 'POST'])
 def editBookstore(bookstore_id):
     editedBookstore = session.query(Bookstore).filter_by(id=bookstore_id).one()
-    print(editedBookstore.name)
     if(request.method == 'POST'):
         if(request.form['name']):
             editedBookstore.name = request.form['name']
         session.add(editedBookstore)
         session.commit()
+        close_session(session)
         flash("Bookstore successfully edited")
         return redirect(url_for('showBookstores'))
     else:
+    	close_session(session)
         return render_template('editBookstore.html', bookstore=editedBookstore, bookstore_id=bookstore_id)
 
 
@@ -42,6 +48,7 @@ def newBookstore():
         newBookstore = Bookstore(name = request.form['name'])
         session.add(newBookstore)
         session.commit()
+        close_session(session)
         flash("New bookstore %s successfully created" % newBookstore.name)
         return redirect(url_for('showBookstores'))
     else:
@@ -54,9 +61,11 @@ def deleteBookstore(bookstore_id):
     if(request.method == 'POST'):
         session.delete(deletedBookstore)
         session.commit()
+        close_session(session)
         flash("Bookstore %s successfully deleted" % deletedBookstore.name)
         return redirect(url_for('showBookstores'))
     else:
+    	close_session(session)
         return render_template('deleteBookstore.html', bookstore = deletedBookstore, bookstore_id = bookstore_id)
 
 
@@ -64,6 +73,7 @@ def deleteBookstore(bookstore_id):
 def bookstoreCatalog(bookstore_id):
 	bookstore = session.query(Bookstore).filter_by(id=bookstore_id).one()
 	books = session.query(Book).filter_by(bookstore_id=bookstore.id)
+	close_session(session)
 	return render_template('bookDetails.html', bookstore=bookstore, books=books)
 
 
@@ -78,6 +88,7 @@ def newBook(bookstore_id):
 					   bookstore_id=bookstore_id)
 		session.add(newBook)
 		session.commit()
+		close_session(session)
 		flash("New book %s successfully created" % newBook.title)
 		return redirect(url_for('bookstoreCatalog',bookstore_id=bookstore_id))
 	else:
@@ -100,9 +111,11 @@ def editBookDetails(bookstore_id, book_id):
 			editedBook.price = request.form['price']
 		session.add(editedBook)
 		session.commit()
+		close_session(session)
 		flash("Book successfully edited")
 		return redirect(url_for('bookstoreCatalog', bookstore_id=bookstore_id))
 	else:
+		close_session(session)
 		return render_template('editBookDetails.html', book=editedBook, bookstore_id=bookstore_id, book_id=book_id)
 
 
@@ -112,9 +125,11 @@ def deleteBook(bookstore_id, book_id):
 	if(request.method == 'POST'):
 		session.delete(deletedBook)
 		session.commit()
+		close_session(session)
 		flash("Book %s successfully deleted" % deletedBook.title)
 		return redirect(url_for('bookstoreCatalog', bookstore_id=bookstore_id))
 	else:
+		close_session(session)
 		return render_template('deleteBook.html', book=deletedBook, bookstore_id=bookstore_id, book_id=book_id)
 
 
@@ -122,18 +137,21 @@ def deleteBook(bookstore_id, book_id):
 def bookstoreCatalogJSON(bookstore_id):
 	bookstore = session.query(Bookstore).filter_by(id=bookstore_id).one()
 	books = session.query(Book).filter_by(bookstore_id=bookstore_id).all()
+	close_session(session)
 	return jsonify(Books=[i.serialize for i in books])
 
 
 @app.route('/bookstore/<int:bookstore_id>/catalog/<int:book_id>/JSON')
 def catalogBookJSON(bookstore_id, book_id):
     book = session.query(Book).filter_by(id=book_id).one()
+    close_session(session)
     return jsonify(book = book.serialize)
 
 
 @app.route('/bookstores/JSON')
 def bookstoresJSON():
     bookstores = session.query(Bookstore).all()
+    close_session(session)
     return jsonify(bookstores=[i.serialize for i in bookstores])
 
 
