@@ -108,6 +108,13 @@ def deleteBook(bookstore_id, book_id):
 		return render_template('deleteBook.html', book=deleteBook, bookstore_id=bookstore_id, book_id=book_id)
 
 
+@app.route('/bookstore/<int:bookstore_id>/catalog/JSON')
+def bookstoreCatalogJSON(bookstore_id):
+	bookstore = session.query(Bookstore).filter_by(id=bookstore_id).one()
+	books = session.query(Book).filter_by(bookstore_id=bookstore_id).all()
+	return jsonify(Books=[i.serialize for i in books])
+
+
 if __name__ == '__main__':
 	app.debug = True
 	app.run(host='0.0.0.0', port=8000)
