@@ -200,7 +200,10 @@ def bookstoreCatalog(bookstore_id):
     bookstore = session.query(Bookstore).filter_by(id=bookstore_id).one()
     books = session.query(Book).filter_by(bookstore_id=bookstore.id)
     close_session(session)
-    return render_template('bookDetails.html', bookstore=bookstore, books=books)
+    if 'username' not in login_session:
+        return render_template('publicBookDetails.html', bookstore=bookstore, books=books)
+    else:
+        return render_template('bookDetails.html', bookstore=bookstore, books=books)
 
 
 @app.route('/bookstore/<int:bookstore_id>/new/', methods=['GET', 'POST'])
