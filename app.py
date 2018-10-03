@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Bookstore, Book, User
@@ -83,9 +83,13 @@ def editBookDetails(bookstore_id, book_id):
 	if(request.method == 'POST'):
 		if(request.form['title']):
 			editedBook.title = request.form['title']
+		if(request.form['author']):
 			editedBook.author = request.form['author']
+		if(request.form['description']):
 			editedBook.description = request.form['description']
+		if(request.form['genre']):
 			editedBook.genre = request.form['genre']
+		if(request.form['price']):
 			editedBook.price = request.form['price']
 		session.add(editedBook)
 		session.commit()
@@ -106,5 +110,4 @@ def deleteBook(bookstore_id, book_id):
 
 if __name__ == '__main__':
 	app.debug = True
-
-app.run(host='0.0.0.0', port=8000)
+	app.run(host='0.0.0.0', port=8000)
