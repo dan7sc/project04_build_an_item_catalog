@@ -185,6 +185,8 @@ def newBookstore():
 
 @app.route("/bookstore/<int:bookstore_id>/delete/", methods=['GET', 'POST'])
 def deleteBookstore(bookstore_id):
+    if 'username' not in login_session:
+        return redirect('/login')    
     session = open_session(engine)
     deletedBookstore = session.query(Bookstore).filter_by(id=bookstore_id).one()
     if(request.method == 'POST'):
