@@ -1,7 +1,7 @@
 <html>
 <body>
     <h1> Bookstores </h1>
-
+    <a href=" {{ url_for('newBookstore', bookstore_id = bookstore_id) }} ">Create New Bookstore</a>
     {% for bookstore in bookstores: %}
         <h3>{{bookstore.name}}</h3>
         <a href=" {{ url_for('editBookstore', bookstore_id = bookstore.id) }} ">Edit Bookstore</a>
