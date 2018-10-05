@@ -58,7 +58,7 @@ def createUser(login_session):
     session.add(newUser)
     session.commit()
     user = session.query(User).filter_by(email=login_session['email']).one()
-    close_session()
+    close_session(session)
     return user.id
 
 
