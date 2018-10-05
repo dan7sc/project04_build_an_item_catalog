@@ -232,6 +232,8 @@ def deleteBookstore(bookstore_id):
         return redirect('/login')    
     session = open_session(engine)
     deletedBookstore = session.query(Bookstore).filter_by(id=bookstore_id).one()
+    if deletedBookstore.user_id != login_session['user_id']:
+        return render_template('notOwner.html')
     if(request.method == 'POST'):
         session.delete(deletedBookstore)
         session.commit()
