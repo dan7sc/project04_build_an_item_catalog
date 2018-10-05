@@ -253,7 +253,8 @@ def newBook(bookstore_id):
                        description=request.form['description'],
                        price=request.form['price'],
                        genre=request.form['genre'],
-                       bookstore_id=bookstore_id)
+                       bookstore_id=bookstore_id,
+                       user_id=bookstore.user_id)
         session.add(newBook)
         session.commit()
         flash("New book %s successfully created" % newBook.title)
