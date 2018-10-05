@@ -290,6 +290,8 @@ def editBookDetails(bookstore_id, book_id):
         return redirect('/login')    
     session = open_session(engine)
     editedBook = session.query(Book).filter_by(id=book_id).one()
+    if editedBook.user_id != login_session['user_id']:
+        return render_template('notOwner.html')
     if(request.method == 'POST'):
         if(request.form['title']):
             editedBook.title = request.form['title']
