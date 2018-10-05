@@ -34,7 +34,7 @@ def close_session(session):
 
 
 def createUser(login_session):
-    open_session(engine)
+    session = open_session(engine)
     newUser = User(name = login_session['username'],
                    email = login_session['email'],
                    picture = login_session['picture'])
