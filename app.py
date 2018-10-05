@@ -264,6 +264,8 @@ def newBook(bookstore_id):
         return redirect('/login')
     session = open_session(engine)
     bookstore = session.query(Bookstore).filter_by(id = bookstore_id).one()        
+    if bookstore.user_id != login_session['user_id']:
+        return render_template('notOwner.html')
     if request.method == 'POST':
         newBook = Book(title=request.form['title'],
                        author=request.form['author'],
