@@ -193,6 +193,8 @@ def editBookstore(bookstore_id):
         return redirect('/login')
     session = open_session(engine)
     editedBookstore = session.query(Bookstore).filter_by(id=bookstore_id).one()
+    if editedBookstore.user_id != login_session['user_id']:
+        return render_template('notOwner.html')
     if(request.method == 'POST'):
         if(request.form['name']):
             editedBookstore.name = request.form['name']
@@ -245,9 +247,10 @@ def deleteBookstore(bookstore_id):
 def bookstoreCatalog(bookstore_id):
     session = open_session(engine)
     bookstore = session.query(Bookstore).filter_by(id=bookstore_id).one()
-    books = session.query(Book).filter_by(bookstore_id=bookstore.id)
+    creator = getUserInfo(bookstore.user_id)
+    books = session.query(Book).filter_by(bookstore_id=bookstore.id).all()
     close_session(session)
-    if 'username' not in login_session:
+    if 'username' not in login_session or creator.id !=  login_session['user_id']:
         return render_template('publicBookDetails.html', bookstore=bookstore, books=books)
     else:
         return render_template('bookDetails.html', bookstore=bookstore, books=books)
@@ -274,7 +277,7 @@ def newBook(bookstore_id):
         return redirect(url_for('bookstoreCatalog',bookstore_id=bookstore_id))
     else:
         close_session(session)
-    	return render_template('newBook.html',bookstore_id=bookstore_id)
+        return render_template('newBook.html',bookstore_id=bookstore_id)
 
 
 @app.route('/bookstore/<int:bookstore_id>/<int:book_id>/edit/', methods=['GET', 'POST'])
