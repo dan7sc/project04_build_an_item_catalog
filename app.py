@@ -202,7 +202,8 @@ def newBookstore():
     if(request.method == 'POST'):
         session = open_session(engine)
         bookstores = session.query(Bookstore).all()
-        newBookstore = Bookstore(name = request.form['name'])
+        newBookstore = Bookstore(name = request.form['name'],
+                                 user_id = login_session['user_id'])
         session.add(newBookstore)
         session.commit()
         flash("New bookstore %s successfully created" % newBookstore.name)
