@@ -319,6 +319,8 @@ def deleteBook(bookstore_id, book_id):
         return redirect('/login')
     session = open_session(engine)
     deletedBook = session.query(Book).filter_by(id=book_id).one()
+    if deletedBook.user_id != login_session['user_id']:
+        return render_template('notOwner.html')
     if(request.method == 'POST'):
         session.delete(deletedBook)
         session.commit()
