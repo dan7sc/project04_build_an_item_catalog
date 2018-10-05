@@ -52,7 +52,7 @@
 <script>
 	window.fbAsyncInit = function() {
 		FB.init({
-			appId: 
+			appId: '377129246154369',
 			cookie: true,
 			xfbml: true,
 			version: 'v2.2'
@@ -89,7 +89,7 @@
 						}, 4000);
 					}
 					else {
-						%('#result').html('Failed to make a server-side call. Check your configuration and console.');
+						$('#result').html('Failed to make a server-side call. Check your configuration and console.');
 					}
 				}
 			});
@@ -99,14 +99,11 @@
 </script>
 
 
-	<button>
 		<fb:login-button scope="public_profile,email" onlogin="sendTokenToServer();">
 			<a href='javascript:sendTokenToServer()'>
 				Login with Facebook
 			</a>
 		</fb:login-button>
-	</button>
-
 
 </body>
 
