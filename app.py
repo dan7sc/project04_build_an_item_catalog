@@ -246,9 +246,9 @@ def bookstoreCatalog(bookstore_id):
 def newBook(bookstore_id):
     if 'username' not in login_session:
         return redirect('/login')
+    session = open_session(engine)
+    bookstore = session.query(Bookstore).filter_by(id = bookstore_id).one()        
     if request.method == 'POST':
-        session = open_session(engine)
-        bookstore = session.query(Bookstore).filter_by(id = bookstore_id).one()
         newBook = Book(title=request.form['title'],
                        author=request.form['author'],
                        description=request.form['description'],
@@ -262,6 +262,7 @@ def newBook(bookstore_id):
         close_session(session)
         return redirect(url_for('bookstoreCatalog',bookstore_id=bookstore_id))
     else:
+        close_session(session)
     	return render_template('newBook.html',bookstore_id=bookstore_id)
 
 
