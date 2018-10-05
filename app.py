@@ -46,7 +46,7 @@ def getUserID(email):
 def getUserInfo(user_id):
     session = open_session(engine)
     user = session.query(User).filter_by(id=user_id).one()
-    close_session()
+    close_session(session)
     return user
 
 
