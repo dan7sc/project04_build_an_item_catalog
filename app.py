@@ -33,6 +33,13 @@ def close_session(session):
     session.close()
 
 
+def getUserInfo(user_id):
+    session = open_session(engine)
+    user = session.query(User).filter_by(id=user_id).one()
+    close_session()
+    return user
+
+
 def createUser(login_session):
     session = open_session(engine)
     newUser = User(name = login_session['username'],
