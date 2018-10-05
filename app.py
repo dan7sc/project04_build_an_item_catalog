@@ -37,7 +37,7 @@ def getUserID(email):
     try:
         session = open_session(engine)
         user = session.query(User).filter_by(email=email).one()
-        close_session()
+        close_session(session)
         return user.id
     except:
         return None
