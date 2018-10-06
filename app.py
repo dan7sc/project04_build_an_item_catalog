@@ -175,6 +175,65 @@ def gdisconnect():
         return response
 
 
+@app.route('/fbconnect', methods=['POST'])
+def fbconnect():
+    if request.args.get('state') != login_session['state']:
+        response = make_response(json.dumps('Invalid state parameter.'), 401)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+    access_token = request.data.decode('utf-8')
+
+    app_id = json.loads(open('fb_client_secrets.json', 'r').read())['web']['app_id']
+    app_secret = json.loads(open('fb_client_secrets.json', 'r').read())['web']['app_secret']
+    url = "https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s" % (app_id, app_secret, access_token)
+    h = httplib2.Http()
+    result = h.request(url, 'GET')[1]
+    
+    data = json.loads(result.decode('utf-8'))
+    token = data['access_token']
+    token_type = data['token_type']    
+    #token = result.split("&")[0]
+
+    url = "https://graph.facebook.com/v2.8/me?access_token=%s&token_type=%s&fields=name,id,email" % (token,token_type)
+    h = httplib2.Http()
+    result = h.request(url, 'GET')[1]
+
+    data = json.loads(result.decode('utf-8'))
+    login_session['username'] = data["name"]
+    login_session['email'] = data["email"]
+    login_session['facebook_id'] = data["id"]
+   
+    url = "https://graph.facebook.com/v2.8/me/picture?access_token=%s&redirect=0&height=200&width=200" % token
+    h = httplib2.Http()
+    result = h.request(url, 'GET')[1]
+    data = json.loads(result.decode('utf-8'))
+
+    login_session['picture'] = data["data"]["url"]
+
+    user_id = getUserID(login_session['email'])
+    if not user_id:
+        user_id = createUser(login_session)
+    login_session['user_id'] = user_id
+
+    output = ''
+    output += '<h1>Welcome, '
+    output += login_session['username']
+    output += '!</h1>'
+    output += '<img src=">'
+    output += login_session['picture']
+    output += '" style = "width: 300px: height: 300px; border-radius: 150px; '
+    output += '-webkit-border-radius: 150px; -moz-border-radius: 150px;"> '
+
+    if (login_session['username'] != ''):
+        username_unknown = login_session['username']
+    else:
+        username_unknown = "unknown"
+    flash("you are now logged in as %s" % username_unknown)
+
+    print("done!")
+    return output
+
+
 @app.route('/')
 @app.route('/bookstores/')
 def showBookstores():
