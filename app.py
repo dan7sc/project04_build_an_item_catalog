@@ -194,7 +194,7 @@ def fbconnect():
     token_type = data['token_type']    
     #token = result.split("&")[0]
 
-    url = "https://graph.facebook.com/v2.8/me?access_token=%s&token_type=%s&fields=name,id,email" % (token,token_type)
+    url = "https://graph.facebook.com/v3.1/me?access_token=%s&token_type=%s&fields=name,id,email" % (token,token_type)
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
 
@@ -203,7 +203,7 @@ def fbconnect():
     login_session['email'] = data["email"]
     login_session['facebook_id'] = data["id"]
    
-    url = "https://graph.facebook.com/v2.8/me/picture?access_token=%s&redirect=0&height=200&width=200" % token
+    url = "https://graph.facebook.com/v3.1/me/picture?access_token=%s&redirect=0&height=200&width=200" % token
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
     data = json.loads(result.decode('utf-8'))
