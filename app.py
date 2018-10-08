@@ -111,6 +111,7 @@ def gconnect():
         response = make_response(json.dumps('Current user is already connected.'), 200)
         response.headers['Content-Type'] = 'application/json'
 
+    login_session['provider'] = 'google'
     login_session['credentials'] = credentials.access_token
     login_session['gplus_id'] = gplus_id
 
@@ -141,7 +142,7 @@ def gconnect():
         username_unknown = login_session['username']
     else:
         username_unknown = "unknown"
-    flash("you are now logged in as %s" % username_unknown)
+    flash("You are now logged in as %s" % username_unknown)
 
     print("done!")
     return output
@@ -199,6 +200,7 @@ def fbconnect():
     result = h.request(url, 'GET')[1]
 
     data = json.loads(result.decode('utf-8'))
+    login_session['provider'] = 'facebook'
     login_session['username'] = data["name"]
     login_session['email'] = data["email"]
     login_session['facebook_id'] = data["id"]
@@ -228,7 +230,7 @@ def fbconnect():
         username_unknown = login_session['username']
     else:
         username_unknown = "unknown"
-    flash("you are now logged in as %s" % username_unknown)
+    flash("You are now logged in as %s" % username_unknown)
 
     print("done!")
     return output
@@ -253,15 +255,8 @@ def disconnect():
     if 'provider' in login_session:
         if login_session['provider'] == 'google':
             gdisconnect()
-            del login_session['gplus_id']
-            del login_session['credentials']
         if login_session['provider'] == 'facebook':
             fbdisconnect()
-            del login_session['facebook_id']
-        del login_session['username']
-        del login_session['email']
-        del login_session['picture']
-        del login_session['user_id']
         del login_session['provider']
         flash("You have successfully been logged out.")
         return redirect(url_for('showBookstores'))
