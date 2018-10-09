@@ -19,3 +19,4 @@ In this project, we will be developing a web application that provides a list of
   3. Install [SQLAlchemy v.1](https://www.sqlalchemy.org/download.html)
   4. From terminal , in the directory where your app.py is, run 
   `python3 app.py`
+  5. Access the app locally using `http://localhost:8000` or `http://0.0.0.0:8000` in your browser
