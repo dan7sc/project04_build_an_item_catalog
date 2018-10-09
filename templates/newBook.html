@@ -1,5 +1,8 @@
-<html>
-<body>
+{% extends "main.html" %}
+{% block content %}
+{% include "navbar.html" %}
+
+
 <h1> New Book </h1>
 <form action="{{url_for('newBook', bookstore_id=bookstore_id )}}" method = 'POST'>
 
@@ -29,5 +32,5 @@
 	<a href=" {{  url_for('bookstoreCatalog', bookstore_id = bookstore_id) }}  ">Cancel</a>
 	
 </form>
-</body>
-</html>
+
+{% endblock %}
