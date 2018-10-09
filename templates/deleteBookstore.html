@@ -1,3 +1,7 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "navbar.html" %}
+
 <h1> Are you sure you want to delete {{bookstore.name}}? </h1>
 
 
@@ -6,3 +10,5 @@
     </br></br>
     <a href=" {{  url_for('showBookstores') }}  ">Cancel</a>
 </form>
+
+{% endblock %}
