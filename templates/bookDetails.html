@@ -1,5 +1,6 @@
-<html>
-<body>
+{% extends "main.html" %}
+{% block content %}
+{% include "navbar.html" %}
 
 	<h1>{{bookstore.name}}</h1>
 
@@ -17,20 +18,18 @@
 
 	{% for i in books %}
 
-	<div>
-		<p>{{i.title}}</p>
-		<p>{{i.author}}</p>
-		<p>{{i.genre}}</p>
-		<p>{{i.description}}</p>
-		<p> {{i.price}} </p>
+		<div>
+			<p>{{i.title}}</p>
+			<p>{{i.author}}</p>
+			<p>{{i.genre}}</p>
+			<p>{{i.description}}</p>
+			<p> {{i.price}} </p>
 
-		<a href='{{url_for('editBookDetails', bookstore_id = bookstore.id, book_id = i.id) }}'>Edit</a>
-		</br>
-		<a href = '{{url_for('deleteBook', bookstore_id = bookstore.id, book_id = i.id ) }}'>Delete</a>
+			<a href='{{url_for('editBookDetails', bookstore_id = bookstore.id, book_id = i.id) }}'>Edit</a>
+			</br>
+			<a href = '{{url_for('deleteBook', bookstore_id = bookstore.id, book_id = i.id ) }}'>Delete</a>
+		</div>
 
-	</div>
+	{% endfor %}
 
-{% endfor %}
-
-</body>
-</html>
+{% endblock %}
