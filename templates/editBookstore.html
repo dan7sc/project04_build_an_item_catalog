@@ -1,3 +1,7 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "navbar.html" %}
+
 <h1> Edit Bookstore </h1>
 
 <form action="{{ url_for('editBookstore', bookstore = bookstore, bookstore_id = bookstore_id) }}" method='post'>
@@ -7,3 +11,5 @@
     <input type='submit' value='Edit'>
     <a href="{{ url_for('showBookstores')}}">Cancel</a>
 </form>
+
+{% endblock %}
