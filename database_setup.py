@@ -40,7 +40,7 @@ class Book(Base):
 	description = Column(String(300))
 	price = Column(String(10))
 	bookstore_id = Column(Integer, ForeignKey('bookstore.id'))
-	bookstore = relationship(Bookstore, cascade="all, delete-orphan", single_parent=True, backref=backref('bookstore', cascade="all, delete-orphan"))
+	bookstore = relationship(Bookstore, backref=backref('bookstore', cascade="all, delete-orphan"))
 	user_id = Column(Integer, ForeignKey('user.id'))
 	user = relationship(User)
 
