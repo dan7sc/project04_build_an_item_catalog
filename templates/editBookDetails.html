@@ -19,7 +19,7 @@
 	</br></br>
     <input type='submit' value='Edit'>
     <a href=" {{ url_for('bookstoreCatalog', bookstore_id = bookstore_id) }} ">Cancel</a>
-
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}" />
 </form>
 
 {% endblock %}

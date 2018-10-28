@@ -9,6 +9,7 @@
         <input type='text' size=30 name='name' required="required" />
         <input type='submit' value='Create'>
         <a href="{{ url_for('showBookstores')}}">Cancel</a>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}" />
 </form>
 
 {% endblock %}

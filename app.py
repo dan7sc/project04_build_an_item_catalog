@@ -19,8 +19,11 @@ from flask import make_response
 import requests
 from functools import wraps
 
+from flask_seasurf import SeaSurf
+
 
 app = Flask(__name__)
+csrf = SeaSurf(app)
 
 engine = create_engine('sqlite:///virtualbookstores.db')
 
@@ -91,6 +94,7 @@ def showLogin():
     return render_template('login.html', STATE=state, CLIENT_ID=CLIENT_ID)
 
 
+@csrf.exempt
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
     if request.args.get('state') != login_session['state']:
@@ -209,6 +213,7 @@ def gdisconnect():
         return response
 
 
+@csrf.exempt
 @app.route('/fbconnect', methods=['POST'])
 def fbconnect():
     if request.args.get('state') != login_session['state']:
