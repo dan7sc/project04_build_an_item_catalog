@@ -92,7 +92,7 @@ def editBookDetails(bookstore_id, book_id):
         session.add(editedBook)
         session.commit()
         books = session.query(Book).all()
-        file.updateJSON('project/models/json/database/books.json', books)        
+        file.updateJSON('project/models/json/database/books.json', books)
         flash("Book successfully edited")
         db.close_session(session)
         return redirect(url_for('book.bookstoreCatalog',
@@ -117,7 +117,7 @@ def deleteBook(bookstore_id, book_id):
         session.delete(deletedBook)
         session.commit()
         books = session.query(Book).all()
-        file.updateJSON('project/models/json/database/books.json', books)        
+        file.updateJSON('project/models/json/database/books.json', books)
         flash("Book %s successfully deleted" % deletedBook.title)
         db.close_session(session)
         return redirect(url_for('book.bookstoreCatalog',
@@ -145,12 +145,3 @@ def catalogBookJSON(book_id):
     response = make_response(data, 200)
     response.headers['Content-Type'] = 'application/json'
     return response
-
-'''
-@book.route('/bookstore/<int:bookstore_id>/catalog/<int:book_id>/JSON')
-def catalogBookJSON(bookstore_id, book_id):
-    session = db.open_session()
-    book = session.query(Book).filter_by(id=book_id).one_or_none()
-    db.close_session(session)
-    return jsonify(Book=book.serialize)
-'''

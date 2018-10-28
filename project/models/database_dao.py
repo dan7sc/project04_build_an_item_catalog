@@ -29,13 +29,12 @@ class daoJSONClass():
         self.wfile.close()
 
 
-
 class daoUserClass():
     def createUser(self, db, login_session):
         self.session = db.open_session()
         self.newUser = User(name=login_session['username'],
-                       email=login_session['email'],
-                       picture=login_session['picture'])
+                            email=login_session['email'],
+                            picture=login_session['picture'])
         self.session.add(self.newUser)
         self.session.commit()
         self.user = self.session.query(User).filter_by(
@@ -47,7 +46,8 @@ class daoUserClass():
     def getUserID(self, db, email):
         try:
             self.session = db.open_session()
-            self.user = self.session.query(User).filter_by(email=email).one_or_none()
+            self.user = self.session.query(
+                User).filter_by(email=email).one_or_none()
             db.close_session(self.session)
             return self.user.id
         except Exception:
@@ -55,7 +55,8 @@ class daoUserClass():
 
     def getUserInfo(self, db, user_id):
         self.session = db.open_session()
-        self.user = self.session.query(User).filter_by(id=user_id).one_or_none()
+        self.user = self.session.query(
+            User).filter_by(id=user_id).one_or_none()
         db.close_session(self.session)
         return self.user
 
