@@ -208,9 +208,10 @@ def fbconnect():
     app_secret = json.loads(
         open('fb_client_secrets.json', 'r').read()
         )['web']['app_secret']
-    url = "https://graph.facebook.com/oauth/access_token?grant_type=" +
-    "fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s"
-    % (app_id, app_secret, access_token)
+    url = "https://graph.facebook.com/oauth/access_token?grant_type="
+    + "fb_exchange_token&client_id=%s&"
+    + "client_secret=%s&fb_exchange_token=%s" % (
+        app_id, app_secret, access_token)
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
 
@@ -218,8 +219,8 @@ def fbconnect():
     token = data['access_token']
     token_type = data['token_type']
 
-    url = "https://graph.facebook.com/v3.1/me?access_token=%s&" +
-    "token_type=%s&fields=name,id,email" % (token, token_type)
+    url = "https://graph.facebook.com/v3.1/me?access_token=%s&"
+    + "token_type=%s&fields=name,id,email" % (token, token_type)
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
 
@@ -229,8 +230,8 @@ def fbconnect():
     login_session['email'] = data["email"]
     login_session['facebook_id'] = data["id"]
 
-    url = "https://graph.facebook.com/v3.1/me/picture?" +
-    "access_token=%s&redirect=0&height=200&width=200" % token
+    url = "https://graph.facebook.com/v3.1/me/picture?"
+    + "access_token=%s&redirect=0&height=200&width=200" % token
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
     data = json.loads(result.decode('utf-8'))
@@ -374,8 +375,8 @@ def bookstoreCatalog(bookstore_id):
     creator = getUserInfo(bookstore.user_id)
     books = session.query(Book).filter_by(bookstore_id=bookstore.id).all()
     close_session(session)
-    if 'username' not in login_session or
-    creator.id != login_session['user_id']:
+    if 'username' not in login_session or (
+            creator.id != login_session['user_id']):
         return render_template(
             'publicBookDetails.html',
             bookstore=bookstore, books=books)
