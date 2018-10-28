@@ -17,6 +17,7 @@ import httplib2
 import json
 from flask import make_response
 import requests
+from functools import wraps
 
 
 app = Flask(__name__)
@@ -38,6 +39,17 @@ def open_session(engine):
 
 def close_session(session):
     session.close()
+
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'username' in login_session:
+            return f(*args, **kwargs)
+        else:
+            flash("Sorry, You Are Not Allowed to Access This Page.")
+            return redirect('/login')
+    return decorated_function
 
 
 def getUserID(email):
@@ -310,9 +322,8 @@ def showBookstores():
 
 
 @app.route("/bookstore/<int:bookstore_id>/edit/", methods=['GET', 'POST'])
+@login_required
 def editBookstore(bookstore_id):
-    if 'username' not in login_session:
-        return redirect('/login')
     session = open_session(engine)
     editedBookstore = session.query(
         Bookstore).filter_by(id=bookstore_id).one_or_none()
@@ -334,9 +345,8 @@ def editBookstore(bookstore_id):
 
 
 @app.route("/bookstore/new/", methods=['GET', 'POST'])
+@login_required
 def newBookstore():
-    if 'username' not in login_session:
-        return redirect('/login')
     if(request.method == 'POST'):
         session = open_session(engine)
         bookstores = session.query(Bookstore).all()
@@ -352,9 +362,8 @@ def newBookstore():
 
 
 @app.route("/bookstore/<int:bookstore_id>/delete/", methods=['GET', 'POST'])
+@login_required
 def deleteBookstore(bookstore_id):
-    if 'username' not in login_session:
-        return redirect('/login')
     session = open_session(engine)
     deletedBookstore = session.query(
         Bookstore).filter_by(id=bookstore_id).one_or_none()
@@ -393,9 +402,8 @@ def bookstoreCatalog(bookstore_id):
 
 
 @app.route('/bookstore/<int:bookstore_id>/new/', methods=['GET', 'POST'])
+@login_required
 def newBook(bookstore_id):
-    if 'username' not in login_session:
-        return redirect('/login')
     session = open_session(engine)
     bookstore = session.query(
         Bookstore).filter_by(id=bookstore_id).one_or_none()
@@ -421,9 +429,8 @@ def newBook(bookstore_id):
 
 @app.route('/bookstore/<int:bookstore_id>/<int:book_id>/edit/',
            methods=['GET', 'POST'])
+@login_required
 def editBookDetails(bookstore_id, book_id):
-    if 'username' not in login_session:
-        return redirect('/login')
     session = open_session(engine)
     editedBook = session.query(Book).filter_by(id=book_id).one_or_none()
     if editedBook.user_id != login_session['user_id']:
@@ -453,9 +460,8 @@ def editBookDetails(bookstore_id, book_id):
 
 @app.route('/bookstore/<int:bookstore_id>/<int:book_id>/delete/',
            methods=['GET', 'POST'])
+@login_required
 def deleteBook(bookstore_id, book_id):
-    if 'username' not in login_session:
-        return redirect('/login')
     session = open_session(engine)
     deletedBook = session.query(Book).filter_by(id=book_id).one_or_none()
     if deletedBook.user_id != login_session['user_id']:
