@@ -3,8 +3,7 @@
 {% include "navbar.html" %}
 
 <h1> Edit Book </h1>
-<form action=" {{ url_for('editBookDetails', bookstore_id = bookstore_id, book_id = book.id) }} " method='post'>
-	
+<form action=" {{ url_for('book.editBookDetails', bookstore_id = bookstore_id, book_id = book.id) }} " method='post'>
     <p>Title:</p>
 	    <input type='text' size=80 name='title' placeholder='{{book.title}}' />
     <p>Author:</p>
@@ -18,7 +17,7 @@
 
 	</br></br>
     <input type='submit' value='Edit'>
-    <a href=" {{ url_for('bookstoreCatalog', bookstore_id = bookstore_id) }} ">Cancel</a>
+    <a href=" {{ url_for('book.bookstoreCatalog', bookstore_id = bookstore_id) }} ">Cancel</a>
     <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}" />
 </form>
 

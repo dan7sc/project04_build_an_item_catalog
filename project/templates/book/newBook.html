@@ -4,7 +4,7 @@
 
 
 <h1> New Book </h1>
-<form action="{{url_for('newBook', bookstore_id=bookstore_id )}}" method = 'POST'>
+<form action="{{url_for('book.newBook', bookstore_id=bookstore_id )}}" method = 'POST'>
     <p>Title:</p>
         <input type='text' size=80 name='title' required="required" />
     <p>Author:</p>
@@ -29,10 +29,10 @@
         <input type='radio' name='genre' value='Other' required="required" />
             <label>Other</label>
 
-		</br></br>
-	<input type='submit' value='Create'>
-	<a href=" {{  url_for('bookstoreCatalog', bookstore_id = bookstore_id) }}  ">Cancel</a>
-	<input type="hidden" name="_csrf_token" value="{{ csrf_token() }}" />
+        </br></br>
+    <input type='submit' value='Create' />
+    <a href=" {{  url_for('book.bookstoreCatalog', bookstore_id = bookstore_id) }}  ">Cancel</a>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}" />
 </form>
 
 {% endblock %}
