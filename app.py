@@ -21,15 +21,17 @@ from functools import wraps
 
 from flask_seasurf import SeaSurf
 
+from project import app
 
-app = Flask(__name__)
+
+#app = Flask(__name__)
 csrf = SeaSurf(app)
 
 engine = create_engine('sqlite:///virtualbookstores.db')
 
 
 CLIENT_ID = json.loads(
-    open('client_secrets.json', 'r').read()
+    open('project/models/json/auth/client_secrets.json', 'r').read()
     )['web']['client_id']
 
 
@@ -223,10 +225,10 @@ def fbconnect():
     access_token = request.data.decode('utf-8')
 
     app_id = json.loads(
-        open('fb_client_secrets.json', 'r').read()
+        open('project/models/json/auth/fb_client_secrets.json', 'r').read()
         )['web']['app_id']
     app_secret = json.loads(
-        open('fb_client_secrets.json', 'r').read()
+        open('project/models/json/auth/fb_client_secrets.json', 'r').read()
         )['web']['app_secret']
 
     url = '''https://graph.facebook.com/oauth/access_token?''' \
@@ -312,79 +314,6 @@ def disconnect():
     else:
         flash("You were not logged in.")
         return redirect(url_for('showBookstores'))
-
-
-@app.route('/')
-@app.route('/bookstores/')
-def showBookstores():
-    session = open_session(engine)
-    bookstores = session.query(Bookstore).order_by(asc(Bookstore.name))
-    close_session(session)
-    if 'username' not in login_session:
-        return render_template('publicBookstores.html', bookstores=bookstores)
-    else:
-        return render_template('bookstores.html', bookstores=bookstores)
-
-
-@app.route("/bookstore/<int:bookstore_id>/edit/", methods=['GET', 'POST'])
-@login_required
-def editBookstore(bookstore_id):
-    session = open_session(engine)
-    editedBookstore = session.query(
-        Bookstore).filter_by(id=bookstore_id).one_or_none()
-    if editedBookstore.user_id != login_session['user_id']:
-        return render_template('notOwner.html')
-    if(request.method == 'POST'):
-        if(request.form['name']):
-            editedBookstore.name = request.form['name']
-        session.add(editedBookstore)
-        session.commit()
-        flash("Bookstore successfully edited")
-        close_session(session)
-        return redirect(url_for('showBookstores'))
-    else:
-        close_session(session)
-        return render_template(
-            'editBookstore.html',
-            bookstore=editedBookstore, bookstore_id=bookstore_id)
-
-
-@app.route("/bookstore/new/", methods=['GET', 'POST'])
-@login_required
-def newBookstore():
-    if(request.method == 'POST'):
-        session = open_session(engine)
-        bookstores = session.query(Bookstore).all()
-        newBookstore = Bookstore(name=request.form['name'],
-                                 user_id=login_session['user_id'])
-        session.add(newBookstore)
-        session.commit()
-        flash("New bookstore %s successfully created" % newBookstore.name)
-        close_session(session)
-        return redirect(url_for('showBookstores'))
-    else:
-        return render_template('newBookstore.html')
-
-
-@app.route("/bookstore/<int:bookstore_id>/delete/", methods=['GET', 'POST'])
-@login_required
-def deleteBookstore(bookstore_id):
-    session = open_session(engine)
-    deletedBookstore = session.query(
-        Bookstore).filter_by(id=bookstore_id).one_or_none()
-    if deletedBookstore.user_id != login_session['user_id']:
-        return render_template('notOwner.html')
-    if(request.method == 'POST'):
-        session.delete(deletedBookstore)
-        session.commit()
-        flash("Bookstore %s successfully deleted" % deletedBookstore.name)
-        close_session(session)
-        return redirect(url_for('showBookstores'))
-    else:
-        close_session(session)
-        return render_template(
-            'deleteBookstore.html',
-            bookstore=deletedBookstore, bookstore_id=bookstore_id)
 
 
 @app.route('/bookstore/<int:bookstore_id>/')
