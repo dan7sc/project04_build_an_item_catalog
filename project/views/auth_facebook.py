@@ -1,19 +1,14 @@
-from flask import Flask, request, flash
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from project.models.database_setup import (
-    Base, User
-    )
-
+from flask import request, flash, make_response
 from flask import session as login_session
+from flask import Blueprint
 
 import httplib2
 import json
-from flask import make_response
-import requests
 
-from flask import Blueprint
-
+from project.models.database_setup import (
+    Base, User
+    )
+from project.models.database_dao import db, dao
 from project.views import auth_login
 
 
@@ -23,43 +18,6 @@ auth_facebook = Blueprint('auth_facebook', __name__,
 
 
 CLIENT_ID = auth_login.CLIENT_ID
-
-engine = create_engine('sqlite:///virtualbookstores.db')
-
-
-def open_session(engine):
-    Base.metadata.bind = engine
-    DBSession = sessionmaker(bind=engine)
-    session = DBSession()
-    return session
-
-
-def close_session(session):
-    session.close()
-
-
-def getUserID(email):
-    try:
-        session = open_session(engine)
-        user = session.query(User).filter_by(email=email).one_or_none()
-        close_session(session)
-        return user.id
-    except Exception:
-        return None
-
-
-def createUser(login_session):
-    session = open_session(engine)
-    newUser = User(name=login_session['username'],
-                   email=login_session['email'],
-                   picture=login_session['picture'])
-    session.add(newUser)
-    session.commit()
-    user = session.query(User).filter_by(
-        email=login_session['email']
-        ).one_or_none()
-    close_session(session)
-    return user.id
 
 
 @auth_facebook.route('/fbconnect', methods=['POST'])
@@ -111,9 +69,9 @@ def fbconnect():
 
     login_session['picture'] = data["data"]["url"]
 
-    user_id = getUserID(login_session['email'])
+    user_id = dao.getUserID(db, login_session['email'])
     if not user_id:
-        user_id = createUser(login_session)
+        user_id = dao.createUser(db, login_session)
     login_session['user_id'] = user_id
 
     output = ''
