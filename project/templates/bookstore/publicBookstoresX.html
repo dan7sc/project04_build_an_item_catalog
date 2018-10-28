@@ -8,11 +8,12 @@
 		    <h1> Bookstores </h1>
 		</div>
 	</div>
+
     {% for bookstore in bookstores: %}
     	<div class="row">
     		<div class="col-sm-1"></div>
     		<div class="col-sm-11">
-		        <h3><a href={{ url_for('book.bookstoreCatalog', bookstore_id = bookstore.id) }}>{{bookstore.name}}</a></h3>
+		        <h3><a href={{ url_for('bookstoreCatalog', bookstore_id = bookstore.id) }}>{{bookstore.name}}</a></h3>
 		    </div>
 		</div>
     {% endfor %}

@@ -18,6 +18,7 @@ from flask import Blueprint
 
 engine = create_engine('sqlite:///virtualbookstores.db')
 
+
 bookstore = Blueprint('bookstore', __name__,
                       template_folder='templates',
                       static_folder='static')
