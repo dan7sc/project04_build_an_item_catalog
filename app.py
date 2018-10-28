@@ -4,7 +4,7 @@ from flask import (
     )
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, Bookstore, Book, User
+from project.models.database_setup import Base, Bookstore, Book, User
 
 from flask import session as login_session
 import random
