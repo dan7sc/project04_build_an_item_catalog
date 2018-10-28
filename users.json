@@ -1,0 +1,10 @@
+{
+    "Users": [
+        {
+            "id": 1,
+            "name": "Daniel Santiago",
+            "email": "dansan@fake.com",
+            "picture": ""
+        }
+    ]
+}

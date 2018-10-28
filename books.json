@@ -1,0 +1,124 @@
+{
+    "Books": [
+        {
+            "id": 1,
+            "title": "The Hobbit",
+            "author": "J.R.R. Tolkien",
+            "genre": "Fantasy",
+            "description": "A book about fantasy.",
+            "price": "$11.99",
+            "bookstore_id": 1,
+            "user_id": 1
+        },
+        {
+            "id": 2,
+            "title": "The Fellowship of the Ring",
+            "author": "J.R.R. Tolkien",
+            "genre": "Fantasy",
+            "description": "A book about fantasy.",
+            "price": "$13.99",
+            "bookstore_id": 1,
+            "user_id": 1            
+        },
+        {
+            "id": 3,
+            "title": "The Two Towers",
+            "author": "J.R.R. Tolkien",
+            "genre": "Fantasy",
+            "description": "A book about fantasy.",
+            "price": "$12.99",
+            "bookstore_id": 1,
+            "user_id": 1
+        },
+        {
+            "id": 4,
+            "title": "The Return of the King",
+            "author": "J.R.R. Tolkien",
+            "genre": "Fantasy",
+            "description": "A book about fantasy.",
+            "price": "$15.99",
+            "bookstore_id": 1,
+            "user_id": 1            
+        },
+        {
+            "id": 5,
+            "title": "Sherlock Holmes: Selected Stories",
+            "author": "Arthur Conan Doyle",
+            "genre": "Mystery",
+            "description": "A Sherlock Holmes mystery.",
+            "price": "$13.39",
+            "bookstore_id": 2,
+            "user_id": 1
+        },
+        {
+            "id": 6,
+            "title": "The Murder of Roger Ackroyd",
+            "author": "Agatha Christie",
+            "genre": "Mystery",
+            "description": "A Hercule Poirot mystery.",
+            "price": "$13.39",
+            "bookstore_id": 2,
+            "user_id": 1
+        },
+        {
+            "id": 7,
+            "title": "The Murder on the Links",
+            "author": "Agatha Christie",
+            "genre": "Mystery",
+            "description": "A Hercule Poirot mystery.",
+            "price": "$12.19",
+            "bookstore_id": 2,
+            "user_id": 1
+        },
+        {
+            "id": 8,
+            "title": "The Red and the Black",
+            "author": "Stendhal",
+            "genre": "French Literature",
+            "description": "A classic book.",
+            "price": "$23.39",
+            "bookstore_id": 3,
+            "user_id": 1
+        },
+        {
+            "id": 9,
+            "title": "Crime and Punishment",
+            "author": "Fyodor Dostoyevsky",
+            "genre": "Russian Literature",
+            "description": "A classic book.",
+            "price": "$25.09",
+            "bookstore_id": 3,
+            "user_id": 1
+        },
+        {
+            "id": 10,
+            "title": "One Hundred Years of Solitude",
+            "author": "Gabriel Garcia Marquez",
+            "genre": "Spanish Literature",
+            "description": "A classic book.",
+            "price": "$24.19",
+            "bookstore_id": 3,
+            "user_id": 1
+        },
+        {
+            "id": 11,
+            "title": "The Third Bank of the River and Other Stories",
+            "author": "João Guimarães Rosa",
+            "genre": "Brazilian Literature",
+            "description": "A brazilian book.",
+            "price": "$15.39",
+            "bookstore_id": 4,
+            "user_id": 1
+        },
+        {
+            "id": 12,
+            "title": "Atonement",
+            "author": "Ian McEwan",
+            "genre": "British Literature",
+            "description": "A novel.",
+            "price": "$16.89",
+            "bookstore_id": 5,
+            "user_id": 1
+        }
+    ]
+}
