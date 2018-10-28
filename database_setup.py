@@ -53,6 +53,8 @@ class Book(Base):
 			'genre'			: self.genre,
 			'description'	: self.description,
 			'price'			: self.price,
+			'bookstore_id'	: self.bookstore_id,
+			'user_id'		: self.user_id
 		}
 
 engine = create_engine('sqlite:///virtualbookstores.db')
