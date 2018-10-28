@@ -36,7 +36,7 @@ def close_session(session):
 def getUserID(email):
     try:
         session = open_session(engine)
-        user = session.query(User).filter_by(email=email).one()
+        user = session.query(User).filter_by(email=email).one_or_none()
         close_session(session)
         return user.id
     except:
@@ -45,7 +45,7 @@ def getUserID(email):
 
 def getUserInfo(user_id):
     session = open_session(engine)
-    user = session.query(User).filter_by(id=user_id).one()
+    user = session.query(User).filter_by(id=user_id).one_or_none()
     close_session(session)
     return user
 
@@ -57,7 +57,7 @@ def createUser(login_session):
                    picture = login_session['picture'])
     session.add(newUser)
     session.commit()
-    user = session.query(User).filter_by(email=login_session['email']).one()
+    user = session.query(User).filter_by(email=login_session['email']).one_or_none()
     close_session(session)
     return user.id
 
@@ -282,7 +282,7 @@ def editBookstore(bookstore_id):
     if 'username' not in login_session:
         return redirect('/login')
     session = open_session(engine)
-    editedBookstore = session.query(Bookstore).filter_by(id=bookstore_id).one()
+    editedBookstore = session.query(Bookstore).filter_by(id=bookstore_id).one_or_none()
     if editedBookstore.user_id != login_session['user_id']:
         return render_template('notOwner.html')
     if(request.method == 'POST'):
@@ -321,7 +321,7 @@ def deleteBookstore(bookstore_id):
     if 'username' not in login_session:
         return redirect('/login')    
     session = open_session(engine)
-    deletedBookstore = session.query(Bookstore).filter_by(id=bookstore_id).one()
+    deletedBookstore = session.query(Bookstore).filter_by(id=bookstore_id).one_or_none()
     if deletedBookstore.user_id != login_session['user_id']:
         return render_template('notOwner.html')
     if(request.method == 'POST'):
@@ -338,7 +338,7 @@ def deleteBookstore(bookstore_id):
 @app.route('/bookstore/<int:bookstore_id>/')
 def bookstoreCatalog(bookstore_id):
     session = open_session(engine)
-    bookstore = session.query(Bookstore).filter_by(id=bookstore_id).one()
+    bookstore = session.query(Bookstore).filter_by(id=bookstore_id).one_or_none()
     creator = getUserInfo(bookstore.user_id)
     books = session.query(Book).filter_by(bookstore_id=bookstore.id).all()
     close_session(session)
@@ -353,7 +353,7 @@ def newBook(bookstore_id):
     if 'username' not in login_session:
         return redirect('/login')
     session = open_session(engine)
-    bookstore = session.query(Bookstore).filter_by(id = bookstore_id).one()        
+    bookstore = session.query(Bookstore).filter_by(id = bookstore_id).one_or_none()        
     if bookstore.user_id != login_session['user_id']:
         return render_template('notOwner.html')
     if request.method == 'POST':
@@ -379,7 +379,7 @@ def editBookDetails(bookstore_id, book_id):
     if 'username' not in login_session:
         return redirect('/login')    
     session = open_session(engine)
-    editedBook = session.query(Book).filter_by(id=book_id).one()
+    editedBook = session.query(Book).filter_by(id=book_id).one_or_none()
     if editedBook.user_id != login_session['user_id']:
         return render_template('notOwner.html')
     if(request.method == 'POST'):
@@ -408,7 +408,7 @@ def deleteBook(bookstore_id, book_id):
     if 'username' not in login_session:
         return redirect('/login')
     session = open_session(engine)
-    deletedBook = session.query(Book).filter_by(id=book_id).one()
+    deletedBook = session.query(Book).filter_by(id=book_id).one_or_none()
     if deletedBook.user_id != login_session['user_id']:
         return render_template('notOwner.html')
     if(request.method == 'POST'):
@@ -425,7 +425,7 @@ def deleteBook(bookstore_id, book_id):
 @app.route('/bookstore/<int:bookstore_id>/catalog/JSON')
 def bookstoreCatalogJSON(bookstore_id):
     session = open_session(engine)
-    bookstore = session.query(Bookstore).filter_by(id=bookstore_id).one()
+    bookstore = session.query(Bookstore).filter_by(id=bookstore_id).one_or_none()
     books = session.query(Book).filter_by(bookstore_id=bookstore_id).all()
     close_session(session)
     return jsonify(Books=[i.serialize for i in books])
@@ -434,7 +434,7 @@ def bookstoreCatalogJSON(bookstore_id):
 @app.route('/bookstore/<int:bookstore_id>/catalog/<int:book_id>/JSON')
 def catalogBookJSON(bookstore_id, book_id):
     session = open_session(engine)
-    book = session.query(Book).filter_by(id=book_id).one()
+    book = session.query(Book).filter_by(id=book_id).one_or_none()
     close_session(session)
     return jsonify(book = book.serialize)
 
