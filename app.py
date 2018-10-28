@@ -19,13 +19,8 @@ from flask import make_response
 import requests
 from functools import wraps
 
-from flask_seasurf import SeaSurf
-
 from project import app
 
-
-#app = Flask(__name__)
-csrf = SeaSurf(app)
 
 engine = create_engine('sqlite:///virtualbookstores.db')
 
@@ -96,7 +91,6 @@ def showLogin():
     return render_template('login.html', STATE=state, CLIENT_ID=CLIENT_ID)
 
 
-@csrf.exempt
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
     if request.args.get('state') != login_session['state']:
@@ -105,7 +99,7 @@ def gconnect():
         return response
     code = request.data
     try:
-        oauth_flow = flow_from_clientsecrets('client_secrets.json', scope='')
+        oauth_flow = flow_from_clientsecrets('project/models/json/auth/client_secrets.json', scope='')
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
@@ -215,7 +209,6 @@ def gdisconnect():
         return response
 
 
-@csrf.exempt
 @app.route('/fbconnect', methods=['POST'])
 def fbconnect():
     if request.args.get('state') != login_session['state']:
