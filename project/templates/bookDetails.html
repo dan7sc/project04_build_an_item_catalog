@@ -1,0 +1,35 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "navbar.html" %}
+
+	<h1>{{bookstore.name}}</h1>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    	<ul>
+    	{% for message in messages %}
+    		<li> <strong> {{message}} </strong></li>
+    	{% endfor %}
+    	</ul>
+    	{% endif %}
+    {% endwith %}
+
+	<a href=" {{ url_for('newBook', bookstore_id = bookstore.id) }} ">Create New Book</a>
+
+	{% for i in books %}
+
+		<div>
+			<p>{{i.title}}</p>
+			<p>{{i.author}}</p>
+			<p>{{i.genre}}</p>
+			<p>{{i.description}}</p>
+			<p> {{i.price}} </p>
+
+			<a href='{{url_for('editBookDetails', bookstore_id = bookstore.id, book_id = i.id) }}'>Edit</a>
+			</br>
+			<a href = '{{url_for('deleteBook', bookstore_id = bookstore.id, book_id = i.id ) }}'>Delete</a>
+		</div>
+
+	{% endfor %}
+
+{% endblock %}

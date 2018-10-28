@@ -1,0 +1,16 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "navbar.html" %}
+
+<h1> Edit Bookstore </h1>
+
+<form action="{{ url_for('editBookstore', bookstore = bookstore, bookstore_id = bookstore_id) }}" method='post'>
+    <p>Name:</p>
+	    <input type='text' size=30 name='name' placeholder='{{bookstore.name}}' />
+
+    <input type='submit' value='Edit'>
+    <a href="{{ url_for('showBookstores')}}">Cancel</a>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}" />
+</form>
+
+{% endblock %}
