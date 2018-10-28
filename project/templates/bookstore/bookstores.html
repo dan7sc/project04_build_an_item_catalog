@@ -20,18 +20,18 @@
     	{% endif %}
     {% endwith %}
 
-    <a href=" {{ url_for('newBookstore', bookstore_id = bookstore_id) }} ">Create New Bookstore</a>
+    <a href=" {{ url_for('bookstore.newBookstore', bookstore_id = bookstore_id) }} ">Create New Bookstore</a>
 
     {% for bookstore in bookstores: %}
     <div class="row">
         <div class="col-sm-1"></div>
         <div class="col-sm-11">   
-            <h3><a href={{ url_for('bookstoreCatalog', bookstore_id = bookstore.id) }}>{{bookstore.name}}</a></h3>
+            <h3><a href={{ url_for('book.bookstoreCatalog', bookstore_id = bookstore.id) }}>{{bookstore.name}}</a></h3>
         </div>
     </div>        
-    <a href=" {{ url_for('editBookstore', bookstore_id = bookstore.id) }} ">Edit Bookstore</a>
+    <a href=" {{ url_for('bookstore.editBookstore', bookstore_id = bookstore.id) }} ">Edit Bookstore</a>
     </br></br>
-    <a href=" {{ url_for('deleteBookstore', bookstore_id = bookstore.id)}} ">Delete Bookstore</a>
+    <a href=" {{ url_for('bookstore.deleteBookstore', bookstore_id = bookstore.id)}} ">Delete Bookstore</a>
     </br></br></br>
     {% endfor %}
 

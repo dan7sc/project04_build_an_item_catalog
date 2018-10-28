@@ -11,7 +11,7 @@ import json
 
 from flask import session as login_session
 
-from functools import wraps
+from project.views.auth_login import login_required
 
 from flask import Blueprint
 
@@ -41,17 +41,6 @@ def getUserInfo(user_id):
     user = session.query(User).filter_by(id=user_id).one_or_none()
     close_session(session)
     return user
-
-
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'username' in login_session:
-            return f(*args, **kwargs)
-        else:
-            flash("Sorry, You Are Not Allowed to Access This Page.")
-            return redirect('/login')
-    return decorated_function
 
 
 @book.route('/bookstore/<int:bookstore_id>/')
