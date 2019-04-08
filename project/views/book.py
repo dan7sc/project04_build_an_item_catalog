@@ -1,3 +1,7 @@
+"""
+Functions to deal with books data and information
+"""
+
 from flask import (
     render_template, request, make_response,
     redirect, url_for, jsonify, flash
@@ -24,6 +28,11 @@ book = Blueprint('book', __name__,
 
 @book.route('/bookstore/<int:bookstore_id>/')
 def bookstoreCatalog(bookstore_id):
+    """
+    Description: Show all books from a bookstore
+    Parameters: bookstore_id
+    Return: html page
+    """
     session = db.open_session()
     bookstore = session.query(
         Bookstore).filter_by(id=bookstore_id).one_or_none()
@@ -43,6 +52,11 @@ def bookstoreCatalog(bookstore_id):
 @book.route('/bookstore/<int:bookstore_id>/new/', methods=['GET', 'POST'])
 @login_required
 def newBook(bookstore_id):
+    """
+    Description: Create a new book
+    Parameters: bookstore id
+    Return: html page
+    """
     session = db.open_session()
     bookstore = session.query(
         Bookstore).filter_by(id=bookstore_id).one_or_none()
@@ -74,6 +88,11 @@ def newBook(bookstore_id):
     methods=['GET', 'POST'])
 @login_required
 def editBookDetails(bookstore_id, book_id):
+    """
+    Description: Edit a book detail
+    Parameters: bookstore id, book id
+    Return: html page
+    """
     session = db.open_session()
     editedBook = session.query(Book).filter_by(id=book_id).one_or_none()
     if editedBook.user_id != login_session['user_id']:
@@ -109,6 +128,11 @@ def editBookDetails(bookstore_id, book_id):
     methods=['GET', 'POST'])
 @login_required
 def deleteBook(bookstore_id, book_id):
+    """
+    Description: Delete a book
+    Parameters: bookstore id, book id
+    Return: html page
+    """
     session = db.open_session()
     deletedBook = session.query(Book).filter_by(id=book_id).one_or_none()
     if deletedBook.user_id != login_session['user_id']:
@@ -131,6 +155,11 @@ def deleteBook(bookstore_id, book_id):
 
 @book.route('/bookstore/catalog/JSON')
 def catalogJSON():
+    """
+    Description: Show all books in json format
+    Parameters: Nothing
+    Return: response
+    """
     data_json = json.load(open('project/models/json/database/books.json', 'r'))
     data = json.dumps({"Books": data_json})
     response = make_response(data, 200)
@@ -140,6 +169,11 @@ def catalogJSON():
 
 @book.route('/bookstore/catalog/<int:book_id>/JSON')
 def catalogBookJSON(book_id):
+    """
+    Description: Show a book in json format
+    Parameters: book id
+    Return: response
+    """
     data_json = json.load(open('project/models/json/database/books.json', 'r'))
     data = json.dumps({"Book": data_json[book_id-1]})
     response = make_response(data, 200)

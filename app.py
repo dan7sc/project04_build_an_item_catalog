@@ -1,3 +1,8 @@
+"""
+Run the app on http://localhost:8000/
+or http://0.0.0.0:8000/
+"""
+
 from project import app
 
 

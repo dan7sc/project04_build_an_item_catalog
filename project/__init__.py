@@ -1,3 +1,10 @@
+"""
+Import blueprints and register them.
+Also add SeaSurf CSRF protection and
+exempt from validation google and
+facebook login.
+"""
+
 from flask import Flask
 from flask_seasurf import SeaSurf
 

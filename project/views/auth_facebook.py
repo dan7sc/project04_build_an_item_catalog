@@ -1,3 +1,7 @@
+"""
+Functions to handle facebook login
+"""
+
 from flask import request, flash, make_response
 from flask import session as login_session
 from flask import Blueprint
@@ -22,6 +26,11 @@ CLIENT_ID = auth_login.CLIENT_ID
 
 @auth_facebook.route('/fbconnect', methods=['POST'])
 def fbconnect():
+    """
+    Description: Connect using facebook login
+    Parameters: Nothing
+    Return: html code
+    """
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter.'), 401)
         response.headers['Content-Type'] = 'application/json'
@@ -95,6 +104,11 @@ def fbconnect():
 
 @auth_facebook.route('/fbdisconnect')
 def fbdisconnect():
+    """
+    Description: Disconnect from a facebook login
+    Parameters: Nothing
+    Return: string
+    """
     facebook_id = login_session['facebook_id']
     url = 'https://graph.facebook.com/%s/permissions' % facebook_id
     h = httplib2.Http()

@@ -1,3 +1,7 @@
+"""
+Function to handle logout
+"""
+
 from flask import redirect, url_for, flash
 from flask import session as login_session
 
@@ -14,6 +18,11 @@ auth_logout = Blueprint('auth_logout', __name__,
 
 @auth_logout.route('/disconnect')
 def disconnect():
+    """
+    Description: Disconnect from a login session
+    Parameters: Nothing
+    Return: redirect to a html page
+    """
     if 'provider' in login_session:
         if login_session['provider'] == 'google':
             auth_google.gdisconnect()

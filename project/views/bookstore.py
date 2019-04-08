@@ -1,3 +1,7 @@
+"""
+Functions to deal with bookstores data and information
+"""
+
 from flask import (
     render_template, request, make_response,
     redirect, url_for, jsonify, flash
@@ -25,6 +29,11 @@ bookstore = Blueprint('bookstore', __name__,
 @bookstore.route('/')
 @bookstore.route('/bookstores/')
 def showBookstores():
+    """
+    Description: Show all bookstores
+    Parameters: Nothing
+    Return: html page
+    """
     session = db.open_session()
     bookstores = session.query(Bookstore).order_by(asc(Bookstore.name))
     db.close_session(session)
@@ -41,6 +50,11 @@ def showBookstores():
 @bookstore.route("/bookstore/new/", methods=['GET', 'POST'])
 @login_required
 def newBookstore():
+    """
+    Description: Create a new bookstore
+    Parameters: Nothing
+    Return: html page
+    """
     if(request.method == 'POST'):
         session = db.open_session()
         bookstores = session.query(Bookstore).all()
@@ -62,6 +76,11 @@ def newBookstore():
                  methods=['GET', 'POST'])
 @login_required
 def editBookstore(bookstore_id):
+    """
+    Description: Edit a bookstore
+    Parameters: bookstore id
+    Return: html page
+    """
     session = db.open_session()
     editedBookstore = session.query(
         Bookstore).filter_by(id=bookstore_id).one_or_none()
@@ -88,6 +107,11 @@ def editBookstore(bookstore_id):
 @bookstore.route("/bookstore/<int:bookstore_id>/delete/",
                  methods=['GET', 'POST'])
 def deleteBookstore(bookstore_id):
+    """
+    Description: Delete a bookstore
+    Parameters: bookstore id
+    Return: html page
+    """
     session = db.open_session()
     deletedBookstore = session.query(
         Bookstore).filter_by(id=bookstore_id).one_or_none()
@@ -113,6 +137,11 @@ def deleteBookstore(bookstore_id):
 
 @bookstore.route('/bookstores/JSON')
 def bookstoresJSON():
+    """
+    Description: Show all bookstores in json format
+    Parameters: Nothing
+    Return: response
+    """
     data_json = json.load(open(
         'project/models/json/database/bookstores.json', 'r'))
     data = json.dumps({"Bookstores": data_json})
@@ -122,7 +151,12 @@ def bookstoresJSON():
 
 
 @bookstore.route('/bookstore/<int:bookstore_id>/JSON')
-def bookstoreCatalogJSON(bookstore_id):
+def bookstoreJSON(bookstore_id):
+    """
+    Description: Show a bookstore in json format
+    Parameters: bookstore id
+    Return: response
+    """
     data_json = json.load(open(
         'project/models/json/database/bookstores.json', 'r'))
     data = json.dumps({"Bookstore": data_json[bookstore_id-1]})

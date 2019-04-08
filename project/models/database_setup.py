@@ -1,12 +1,18 @@
+"""
+Create classes for user, bookstore and book tables
+"""
+
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy import create_engine
 
+
 Base = declarative_base()
 
 
 class User(Base):
+    """Register columns for user table"""
     __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True)
@@ -16,6 +22,7 @@ class User(Base):
 
 
 class Bookstore(Base):
+    """Register columns for bookstore table"""
     __tablename__ = 'bookstore'
 
     id = Column(Integer, primary_key=True)
@@ -25,6 +32,7 @@ class Bookstore(Base):
 
     @property
     def serialize(self):
+        """Return object data in serializeable format"""
         return {
             'id': self.id,
             'name': self.name,
@@ -33,6 +41,7 @@ class Bookstore(Base):
 
 
 class Book(Base):
+    """Register columns for book table"""
     __tablename__ = 'book'
 
     id = Column(Integer, primary_key=True)
@@ -51,6 +60,7 @@ class Book(Base):
 
     @property
     def serialize(self):
+        """Return object data in serializeable format"""
         return {
             'id': self.id,
             'title': self.title,
@@ -63,6 +73,6 @@ class Book(Base):
         }
 
 
+# Connect to Database
 engine = create_engine('sqlite:///virtualbookstores.db')
-
 Base.metadata.create_all(engine)

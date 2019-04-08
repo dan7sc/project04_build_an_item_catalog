@@ -1,3 +1,7 @@
+"""
+Functions to handle google login
+"""
+
 from flask import request, flash, make_response
 from flask import session as login_session
 from flask import Blueprint
@@ -26,6 +30,11 @@ CLIENT_ID = auth_login.CLIENT_ID
 
 @auth_google.route('/gconnect', methods=['POST'])
 def gconnect():
+    """
+    Description: Connect using google login
+    Parameters: Nothing
+    Return: html code
+    """
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter'), 401)
         response.headers['Content-Type'] = 'application/json'
@@ -115,6 +124,11 @@ def gconnect():
 
 @auth_google.route("/gdisconnect")
 def gdisconnect():
+    """
+    Description: Disconnect from a google login
+    Parameters: Nothing
+    Return: response
+    """
     credentials = login_session.get('credentials')
     if credentials is None:
         response = make_response(

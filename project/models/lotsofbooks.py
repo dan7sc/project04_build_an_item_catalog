@@ -1,3 +1,8 @@
+"""
+Copy user, bookstore and book information
+stored in json files to the database
+"""
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
