@@ -1,1 +1,1 @@
-[{"user_id": 1, "name": "Urban Fantasy", "id": 1}, {"user_id": 1, "name": "Dead Fish", "id": 2}, {"user_id": 1, "name": "Classic Stars", "id": 3}, {"user_id": 1, "name": "Tupi or not Tupi?", "id": 4}, {"user_id": 1, "name": "Updated!", "id": 5}]
+[{"id": 1, "name": "Urban Fantasy", "user_id": 1}, {"id": 2, "name": "Dead Fish", "user_id": 1}, {"id": 3, "name": "Classic Stars", "user_id": 1}, {"id": 4, "name": "Tupi or not Tupi?", "user_id": 1}, {"id": 5, "name": "Updated!", "user_id": 1}]

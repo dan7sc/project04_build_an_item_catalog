@@ -10,6 +10,9 @@ import json
 from flask import Blueprint
 from functools import wraps
 
+import os
+
+base_path = os.getcwd() + '/'
 
 auth_login = Blueprint('auth_login', __name__,
                        template_folder='templates',
@@ -17,7 +20,7 @@ auth_login = Blueprint('auth_login', __name__,
 
 
 CLIENT_ID = json.loads(
-    open('project/models/json/auth/client_secrets.json', 'r').read()
+    open(base_path + 'project/models/json/auth/client_secrets.json', 'r').read()
     )['web']['client_id']
 
 

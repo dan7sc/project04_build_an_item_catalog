@@ -11,6 +11,9 @@ from database_setup import (
     )
 
 import json
+import os
+
+base_path = os.getcwd() + '/json/database_setup/'
 
 engine = create_engine('sqlite:///virtualbookstores.db')
 
@@ -20,11 +23,11 @@ session = DBSession()
 
 
 user_json = json.loads(
-    open('users.json', 'r').read())
+    open(base_path + 'users.json', 'r').read())
 bookstore_json = json.loads(
-    open('bookstores.json', 'r').read())
+    open(base_path + 'bookstores.json', 'r').read())
 book_json = json.loads(
-    open('books.json', 'r').read())
+    open(base_path + 'books.json', 'r').read())
 
 
 for i in user_json['Users']:
