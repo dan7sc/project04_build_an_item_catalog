@@ -14,16 +14,19 @@
 		<div class="col-sm-11">
 			<h3>Sign in with</h3>
 			<div id="signinButton">
-				<span class="g-signin"
+				<span class="g-signin2"
 					data-scope="openid email"
 					data-clientid="{{CLIENT_ID}}"
 					data-redirecturi="postmessage"
 					data-accesstype="offline"
 					data-cookiepolicy="single_host_origin"
 					data-callback="signInCallback"
-					data-approvalprompt="force">
+                    data-approvalprompt="force"
+                    data-onsuccess="signInCallback">
 				</span>
 			</div>
+            <div id="result"></div>
+            <br/>
 			<div id="fb-login">
 				<fb:login-button scope="public_profile,email" onlogin="sendTokenToServer();">
 					<a href='javascript:sendTokenToServer()'>
@@ -31,39 +34,7 @@
 					</a>
 				</fb:login-button>
 			</div>
-			<div id="result"></div>
-            </br>
-            <div id="my-signin2"></div>
-
 		</div>
-
-
-
-
-<script>
-    function onSuccess(googleUser) {
-        console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
-    }
-    function onFailure(error) {
-        console.log(error);
-    }
-    function renderButton() {
-        gapi.signin2.render('my-signin2', {
-            'scope': 'profile email',
-            'width': 160,
-            'height': 30,
-            'longtitle': true,
-            'theme': 'dark',
-            'onsuccess': onSuccess,
-            'onfailure': onFailure
-        });
-    }
-</script>
-
-
-
-
-
 
 
 <script>
@@ -78,6 +49,7 @@
 				data: authResult['code'],
 				success: function(result) {
 					if(result) {
+                        console.log(result);
 						$('#result').html('Login Successful!</br>' + result + '</br>Redirecting...')
 						setTimeout(function() {
 							window.location.href = "/bookstores";
@@ -93,7 +65,6 @@
 			});
 		}
 	}
-
 </script>
 
 
